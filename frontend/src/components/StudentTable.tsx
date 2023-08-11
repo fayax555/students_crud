@@ -27,7 +27,7 @@ const studentData = [
 
 export function StudentTable() {
   return (
-    <div className="mx-auto mt-10 w-[800px] rounded-md border-[1px] pb-7">
+    <div className="mx-auto mt-10 w-[810px] rounded-md border-[1px] px-2 pb-7">
       <table className="w-full">
         <thead className="border-b-[1px] text-sm text-slate-600">
           <tr className="[&>*]:px-5 [&>*]:text-left [&>*]:font-light">
@@ -50,13 +50,7 @@ export function StudentTable() {
               <td>{s.birthdate}</td>
               <td>{s.grade}</td>
               <td>{s.school}</td>
-              <td className="rounded-r-md">
-                <ul className="flex space-x-2">
-                  {s.subjects.map((sub) => (
-                    <li key={sub}>{sub}</li>
-                  ))}
-                </ul>
-              </td>
+              <td className="rounded-r-md">{s.subjects.flat().join(", ")}</td>
             </tr>
           ))}
         </tbody>
