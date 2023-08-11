@@ -29,7 +29,7 @@ const studentData = [
 
 export function StudentTable() {
   return (
-    <div className="mx-auto mt-10 w-[900px] rounded-md border-[1px] px-2 pb-7">
+    <div className="mx-auto mt-4 rounded-md border-[1px] px-2 pb-7">
       <table className="w-full">
         <thead className="border-b-[1px] text-sm text-slate-600">
           <tr className="[&>*]:px-5 [&>*]:text-left [&>*]:font-light">

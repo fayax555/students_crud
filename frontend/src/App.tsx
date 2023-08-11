@@ -1,11 +1,15 @@
-import { StudentTable } from './components/StudentTable'
+import { Route, Routes } from "react-router-dom";
+
+import { Home } from "./components/Home";
+import { AddForm } from "./components/AddForm";
 
 function App() {
   return (
-    <main>
-      <StudentTable />
-    </main>
-  )
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/add" element={<AddForm />} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;
