@@ -1,3 +1,5 @@
+import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+
 const studentData = [
   {
     id: 1,
@@ -27,7 +29,7 @@ const studentData = [
 
 export function StudentTable() {
   return (
-    <div className="mx-auto mt-10 w-[810px] rounded-md border-[1px] px-2 pb-7">
+    <div className="mx-auto mt-10 w-[900px] rounded-md border-[1px] px-2 pb-7">
       <table className="w-full">
         <thead className="border-b-[1px] text-sm text-slate-600">
           <tr className="[&>*]:px-5 [&>*]:text-left [&>*]:font-light">
@@ -37,6 +39,7 @@ export function StudentTable() {
             <th>Grade</th>
             <th>School</th>
             <th>Subjects</th>
+            <th className="translate-x-2">Action</th>
           </tr>
         </thead>
         <tbody className="translate-y-4 text-slate-700">
@@ -50,7 +53,17 @@ export function StudentTable() {
               <td>{s.birthdate}</td>
               <td>{s.grade}</td>
               <td>{s.school}</td>
-              <td className="rounded-r-md">{s.subjects.flat().join(", ")}</td>
+              <td>{s.subjects.flat().join(", ")}</td>
+              <td className="rounded-r-md">
+                <div className="flex">
+                  <a className="mr-3 cursor-pointer text-xl text-slate-500 hover:text-blue-700">
+                    <AiFillEdit />
+                  </a>
+                  <a className="cursor-pointer text-xl text-slate-500 hover:text-red-700">
+                    <AiFillDelete />
+                  </a>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>
