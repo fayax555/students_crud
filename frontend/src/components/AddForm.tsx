@@ -29,7 +29,7 @@ export function AddForm() {
 
   return (
     <div className="mt-10">
-      <h1 className="text-center text-2xl">Add a New Student</h1>
+      <h1 className="text-center text-2xl">Add a Student</h1>
 
       <form
         className="mx-auto mb-20 grid max-w-[500px] gap-5 px-5"
