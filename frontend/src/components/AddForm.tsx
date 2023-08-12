@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, type FormEvent, useEffect } from "react";
 import { Checkbox } from "./SubjectCheckbox";
+
+import { useParams, useNavigate } from "react-router-dom";
 
 const subjectData = [
   "Math",
@@ -11,6 +13,8 @@ const subjectData = [
 ];
 
 export function AddForm() {
+  const navigate = useNavigate();
+
   const [fullName, setFullName] = useState("");
   const [birthdate, setBirthdate] = useState("");
   const [grade, setGrade] = useState("");
@@ -18,7 +22,33 @@ export function AddForm() {
   const [subjects, setSubjects] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const { id } = useParams();
+
+  console.log(id);
+
+  useEffect(() => {
+    if (!id) return;
+
+    fetch(`http://localhost:8000/api/students/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setFullName(data.full_name);
+        setBirthdate(data.birthdate);
+        setGrade(data.grade);
+        setSchool(data.school);
+        setSubjects(data.subjects.split(","));
+      });
+  }, [id]);
+
+  const resetForm = () => {
+    setFullName("");
+    setBirthdate("");
+    setGrade("");
+    setSchool("");
+    setSubjects([]);
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -30,28 +60,42 @@ export function AddForm() {
       subjects: subjects.join(","),
     });
 
-    fetch("http://localhost:8000/api/students", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: body,
-    })
-      .then((res) => {
-        if (res.ok) {
-          setFullName("");
-          setBirthdate("");
-          setGrade("");
-          setSchool("");
-          setSubjects([]);
-        } else {
-          alert("Something went wrong");
-        }
+    if (id) {
+      fetch(`http://localhost:8000/api/students/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: body,
       })
-      .finally(() => setLoading(false));
+        .then((res) => {
+          if (res.ok) {
+            resetForm();
+            navigate("/");
+          } else {
+            alert("Something went wrong");
+          }
+        })
+        .finally(() => setLoading(false));
+    } else {
+      fetch("http://localhost:8000/api/students", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: body,
+      })
+        .then((res) => {
+          if (res.ok) {
+            resetForm();
+            navigate("/");
+          } else {
+            alert("Something went wrong");
+          }
+        })
+        .finally(() => setLoading(false));
+    }
   };
 
   return (
     <div className="mt-10">
-      <h1 className="text-center text-2xl">Add a Student</h1>
+      <h1 className="text-center text-2xl">{id ? "Edit" : "Add"} a Student</h1>
 
       <form
         className="mx-auto mb-20 grid max-w-[500px] gap-5 px-5"
@@ -137,7 +181,8 @@ export function AddForm() {
               : "bg-violet-600 hover:bg-violet-800"
           }`}
         >
-          {loading ? "Adding..." : "Add Student"}
+          {id && <span>{loading ? "Editing..." : "Edit Student"}</span>}
+          {!id && <span>{loading ? "Adding..." : "Add Student"}</span>}
         </button>
       </form>
     </div>

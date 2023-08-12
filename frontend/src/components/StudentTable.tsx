@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 type Student = {
   id: number;
@@ -54,12 +55,30 @@ export function StudentTable() {
               <td>{s.subjects.split(",").join(", ")}</td>
               <td className="rounded-r-md">
                 <div className="flex">
-                  <a className="mr-3 cursor-pointer text-xl text-slate-500 hover:text-blue-700">
+                  <Link
+                    to={`/edit/${s.id}`}
+                    className="mr-3 cursor-pointer text-xl text-slate-500 hover:text-blue-700"
+                  >
                     <AiFillEdit />
-                  </a>
-                  <a className="cursor-pointer text-xl text-slate-500 hover:text-red-700">
+                  </Link>
+                  <button
+                    className="cursor-pointer text-xl text-slate-500 hover:text-red-700"
+                    onClick={() => {
+                      fetch(`http://localhost:8000/api/students/${s.id}`, {
+                        method: "DELETE",
+                      })
+                        .then((res) => res.json())
+                        .then(() => {
+                          setStudentData(
+                            studentData.filter(
+                              (student) => student.id !== s.id,
+                            ),
+                          );
+                        });
+                    }}
+                  >
                     <AiFillDelete />
-                  </a>
+                  </button>
                 </div>
               </td>
             </tr>
