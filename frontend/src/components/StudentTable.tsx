@@ -1,33 +1,31 @@
+import { useEffect, useState } from "react";
 import { AiFillDelete, AiFillEdit } from "react-icons/ai";
 
-const studentData = [
-  {
-    id: 1,
-    fullName: "John Lennon",
-    birthdate: "02-10-1998",
-    grade: 10,
-    school: "Thaajudheen School",
-    subjects: ["Maths", "English"],
-  },
-  {
-    id: 2,
-    fullName: "Paul McCartney",
-    birthdate: "15-04-2001",
-    grade: 8,
-    school: "Ghiyasuddin School",
-    subjects: ["Dhivehi", "Islam"],
-  },
-  {
-    id: 3,
-    fullName: "George Harrison",
-    birthdate: "25-12-2000",
-    grade: 9,
-    school: "Majeediyya School",
-    subjects: ["Chemistry", "Biology"],
-  },
-] as const;
+type Student = {
+  id: number;
+  full_name: string;
+  birthdate: string;
+  grade: string;
+  school: string;
+  subjects: string;
+};
 
 export function StudentTable() {
+  const [studentData, setStudentData] = useState<Student[]>();
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/students", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setStudentData(data);
+      });
+  }, []);
+
+  if (!studentData) return <div>Loading...</div>;
+
   return (
     <div className="mx-auto mt-4 rounded-md border-[1px] px-2 pb-7">
       <table className="w-full">
@@ -49,11 +47,11 @@ export function StudentTable() {
               className="rounded-md pt-5 hover:bg-slate-100 [&>*]:px-5"
             >
               <td className="rounded-l-md py-4 ">{s.id}</td>
-              <td className="py-4 ">{s.fullName}</td>
+              <td className="py-4 ">{s.full_name}</td>
               <td>{s.birthdate}</td>
               <td>{s.grade}</td>
               <td>{s.school}</td>
-              <td>{s.subjects.flat().join(", ")}</td>
+              <td>{s.subjects.split(",").join(", ")}</td>
               <td className="rounded-r-md">
                 <div className="flex">
                   <a className="mr-3 cursor-pointer text-xl text-slate-500 hover:text-blue-700">

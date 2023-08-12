@@ -22,9 +22,31 @@ export function AddForm() {
     e.preventDefault();
     setLoading(true);
 
-    // if (loading) return;
+    const body = JSON.stringify({
+      full_name: fullName,
+      birthdate,
+      grade,
+      school,
+      subjects: subjects.join(","),
+    });
 
-    console.log({ fullName, birthdate, grade, school, subjects });
+    fetch("http://localhost:8000/api/students", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: body,
+    })
+      .then((res) => {
+        if (res.ok) {
+          setFullName("");
+          setBirthdate("");
+          setGrade("");
+          setSchool("");
+          setSubjects([]);
+        } else {
+          alert("Something went wrong");
+        }
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
