@@ -1,7 +1,7 @@
 import { useState, type FormEvent, useEffect } from "react";
 import { Checkbox } from "./SubjectCheckbox";
 
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 const subjectData = [
   "Math",
@@ -94,7 +94,12 @@ export function AddForm() {
   };
 
   return (
-    <div className="mt-10">
+    <div className="mx-auto mt-10 max-w-[500px]">
+      <Link to={"/"}>
+        <button className="mb-5 ml-4 block rounded-md  bg-violet-600 px-4 py-2 text-lg font-semibold text-slate-200 transition hover:bg-violet-800">
+          Back
+        </button>
+      </Link>
       <h1 className="text-center text-2xl">{id ? "Edit" : "Add"} a Student</h1>
 
       <form
